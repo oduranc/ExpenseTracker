@@ -8,7 +8,9 @@ namespace ExpenseTracker
 {
     public class Transaction
     {
-        private static List<Transaction> transactions = new List<Transaction>();
+        public static List<Transaction> transactions = new List<Transaction>();
+
+        private static int autoIncrement = 0;
 
         // Enums
         public enum Type { Ingreso, Gasto }
@@ -17,16 +19,18 @@ namespace ExpenseTracker
         // Propiedades
         public int id { get; set; }
         public Type type { get; set; }
-        public Cuenta account { get; set; }
-        public Categoria category { get; set; }
+        public string account { get; set; }
+        public string category { get; set; }
         public float amount { get; set; }
         public Currency currency { get; set; }
         public string description { get; set; }
         public DateTime date { get; set; }
 
         // Constructor
-        public Transaction(Type type, Cuenta account, Categoria category, float amount, Currency currency, string description, DateTime date)
+        public Transaction(Type type, string account, string category, float amount, Currency currency, string description, DateTime date)
         {
+            autoIncrement++;
+            this.id = autoIncrement;
             this.type = type;
             this.account = account;
             this.category = category;
