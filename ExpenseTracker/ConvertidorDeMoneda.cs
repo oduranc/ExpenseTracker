@@ -17,7 +17,7 @@ namespace ExpenseTracker
         }
 
 
-        public async Task <float> ComprarDolaresEnElPopular(float dinero,string banco,int moneda)
+        public async Task <float> ConvertirMoneda(float dinero,string banco,int moneda)
         {
             float NuevaTasa;
             if (moneda == 1)

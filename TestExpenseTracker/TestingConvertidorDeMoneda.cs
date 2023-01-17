@@ -1,9 +1,9 @@
 using Xunit;
 using System.Collections.Generic;
 using System;
-using RateHttpRequest;
+using ExpenseTracker;
 
-namespace TestingRateHttpRequest
+namespace TestExpenseTracker
 {
     public class StubBuscadorTasas : IBuscadorTasas
     {
@@ -53,7 +53,7 @@ namespace TestingRateHttpRequest
             ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
 
             // ACT
-            float dolares = sut.ComprarDolaresEnElPopular(pesos);
+            float dolares = sut.ConvertirMoneda(pesos,banco,moneda);
 
             // ASSERT
             Assert.Equal(pesos / tasaCorrecta, dolares, 2);

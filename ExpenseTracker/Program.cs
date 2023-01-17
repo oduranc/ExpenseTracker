@@ -7,8 +7,6 @@ using ExpenseTracker;
 IBuscadorTasas buscadorTasas = new BuscadorTasas(); // En el caso de prueba este será el stub
 ConvertidorDeMoneda convertidor = new ConvertidorDeMoneda(buscadorTasas); // <-- Dependency Injection
 
-// Esto no es necesario, es sólo para mostrar la lista de tasas:
-
 Console.WriteLine("Bienvenidos");
 Console.Write("Banco: ");
 string banco = Console.ReadLine();
@@ -31,13 +29,13 @@ if (monto == 0)
 Console.WriteLine("Conversion");
 Console.WriteLine("1. USD");
 Console.WriteLine("2. DOP");
-int res = Convert.ToInt16(Console.ReadLine());
+int choice = Convert.ToInt16(Console.ReadLine());
 
 Console.WriteLine($"\nToma tus: ${monto}");
-var dolares =  convertidor.ComprarDolaresEnElPopular(monto, banco,res);
+var cantidad =  convertidor.ConvertirMoneda(monto, banco,choice);
 Console.Write($" Conversion de {monto}----> ");
-var d = await dolares;
-Console.Write($"{d}");
+var convertirMoneda = await cantidad;
+Console.Write($"{convertirMoneda}");
 
 
 Console.ReadKey();
