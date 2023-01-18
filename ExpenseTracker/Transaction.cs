@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace ExpenseTracker
         public enum Type { Ingreso, Gasto }
         public enum Currency { DOP, USD }
 
-        // Propiedades
+        // Properties
         public int id { get; set; }
         public Type type { get; set; }
         public string account { get; set; }
@@ -38,6 +39,13 @@ namespace ExpenseTracker
             this.currency = currency;
             this.description = description;
             this.date = date;
+        }
+
+        // Dispose
+        public static void Dispose()
+        {
+            transactions = new List<Transaction>();
+            autoIncrement = 0;
         }
 
         // Create
