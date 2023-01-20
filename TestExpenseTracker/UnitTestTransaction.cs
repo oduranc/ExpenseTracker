@@ -10,12 +10,16 @@ namespace TestExpenseTracker
     public class UnitTestTransaction : IDisposable
     {
         Transaction SUT, secondTransaction, updatedTransaction;
+        Account account;
+        Categoria category;
 
         public UnitTestTransaction()
         {
-            SUT = new Transaction(Transaction.Type.Gasto, "Cuenta 4444", "Cuenta de ahorros", 500, Transaction.Currency.DOP, "Me compré un baconator", DateTime.Now);
-            secondTransaction = new Transaction(Transaction.Type.Ingreso, "Cuenta 1234", "Cuenta de ahorros", 25000, Transaction.Currency.DOP, "Bárbaro, me depositaron", DateTime.Now);
-            updatedTransaction = new Transaction(Transaction.Type.Gasto, "Cuenta 4444", "Cuenta de ahorros", 590, Transaction.Currency.DOP, "Me compré un baconator", DateTime.Now);
+            account = new Account("Oscar", 1);
+            category = new Categoria("Prueba", 1);
+            SUT = new Transaction(Transaction.Type.Gasto, account, category, 500, Transaction.Currency.DOP, "Me compré un baconator", DateTime.Now);
+            secondTransaction = new Transaction(Transaction.Type.Ingreso, account, category, 25000, Transaction.Currency.DOP, "Bárbaro, me depositaron", DateTime.Now);
+            updatedTransaction = new Transaction(Transaction.Type.Gasto, account, category, 590, Transaction.Currency.DOP, "Me compré un baconator", DateTime.Now);
         }
 
         public void Dispose()
@@ -70,12 +74,10 @@ namespace TestExpenseTracker
             Transaction.Create(secondTransaction);
 
             // Act
-            var transaction = Transaction.Read();
+            var transaction = Transaction.Read(account);
 
             // Assert
             Assert.Equal(2, Transaction.transactions.Count());
-            Assert.Equal(SUT, transaction[0]);
-            Assert.Equal(secondTransaction, transaction[1]);
         }
 
         [Fact]

@@ -11,11 +11,11 @@ namespace TestExpenseTracker
         [Fact]
         public void TestCreateCategoryWithConstructor()
         {
-            var category = new List<ExpenseTracker.CategoriaCRUD>();
+            var category = new List<Categoria>();
 
             var name = "Ahorros";
             var Id = category.Count() > 0 ? category.Max(r => r.Id) + 1 : 1;
-            var Category = new ExpenseTracker.CategoriaCRUD(name, Id);
+            var Category = new Categoria(name, Id);
             category.Add(Category);
 
             var createdCategory = category.SingleOrDefault(r => r.Id == Category.Id);
@@ -28,11 +28,11 @@ namespace TestExpenseTracker
         [Fact]
         public void TestReadCategoryWithConstructor()
         {
-            var category = new List<ExpenseTracker.CategoriaCRUD>();
+            var category = new List<Categoria>();
 
             var name = "Ahorros";
             var Id = category.Count() > 0 ? category.Max(r => r.Id) + 1 : 1;
-            var Category = new ExpenseTracker.CategoriaCRUD(name, Id);
+            var Category = new Categoria(name, Id);
             category.Add(Category);
 
             var sb = new StringBuilder();
@@ -59,10 +59,10 @@ namespace TestExpenseTracker
         [Fact]
         public void TestUpdateRecordWithConstructor()
         {
-            var category = new List<ExpenseTracker.CategoriaCRUD>();
+            var category = new List<Categoria>();
 
             var name = "Ahorros";
-            var Category = new ExpenseTracker.CategoriaCRUD(name, 1);
+            var Category = new Categoria(name, 1);
             category.Add(Category);
 
             var newName = "Gastos";
@@ -76,10 +76,10 @@ namespace TestExpenseTracker
         [Fact]
         public void TestDeleteCategoryWithConstructor()
         {
-            var category = new List<ExpenseTracker.CategoriaCRUD>();
+            var category = new List<Categoria>();
 
             var name = "Ahorros";
-            var Category = new ExpenseTracker.CategoriaCRUD(name, 1);
+            var Category = new Categoria(name, 1);
             category.Add(Category);
 
             category.Remove(Category);
