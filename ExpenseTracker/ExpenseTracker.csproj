@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="1.0.1" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>
