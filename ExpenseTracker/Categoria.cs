@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker
 {
-    public class CategoriaCRUD
+    public class Categoria
     {
-        public CategoriaCRUD(string? name, int? id)
+        public static List<Categoria> category = new List<Categoria>();
+
+        public Categoria(string? name, int? id)
         {
             Name = name;
             Id = id;
@@ -17,17 +19,17 @@ namespace ExpenseTracker
         public string? Name { get; set; }
         public int? Id { get; set; }
 
-        static void Main(string[] args)
+        public static void CRUD()
         {
-            var category = new List<CategoriaCRUD>();
-
             while (true)
             {
-                Console.WriteLine("\n1. Create category");
-                Console.WriteLine("\n2. Read category");
-                Console.WriteLine("\n3. Update category");
-                Console.WriteLine("\n4. Delete category");
-                Console.WriteLine("\n5. Exit");
+                Console.Clear();
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("1. Create category");
+                Console.WriteLine("2. Read category");
+                Console.WriteLine("3. Update category");
+                Console.WriteLine("4. Delete category");
+                Console.WriteLine("5. Exit");
 
                 var choice = Console.ReadLine();
 
@@ -39,7 +41,7 @@ namespace ExpenseTracker
 
                         var Id = category.Count() > 0 ? category.Max(r => r.Id) + 1 : 1;
 
-                        var Category = new CategoriaCRUD(Name, Id);
+                        var Category = new Categoria(Name, Id);
                         category.Add(Category);
 
 
@@ -51,7 +53,7 @@ namespace ExpenseTracker
                         {
                             foreach (var category01 in category)
                             {
-                                Console.WriteLine("Id: " + category01.Id);
+                                Console.WriteLine("\nId: " + category01.Id);
                                 Console.WriteLine("Name: " + category01.Name);
                             }
                         }
@@ -105,6 +107,8 @@ namespace ExpenseTracker
                         Console.WriteLine("\nInvalid choice.");
                         break;
                 }
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
             }
         }
     }

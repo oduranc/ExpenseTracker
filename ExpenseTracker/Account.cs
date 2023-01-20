@@ -8,6 +8,7 @@ namespace ExpenseTracker
 {
     public class Account
     {
+        public static List<Account> records = new List<Account>();
         public Account(string? name, int? id)
         {
             Name = name;
@@ -17,17 +18,17 @@ namespace ExpenseTracker
         public int? Id { get; set; }
         public string Name { get; set; }
 
-        public static void CURD()
+        public static void CRUD()
         {
-            var records = new List<Account>();
-
             while (true)
             {
-                Console.WriteLine("\n1. Create record");
-                Console.WriteLine("\n2. Read record");
-                Console.WriteLine("\n3. Update record");
-                Console.WriteLine("\n4. Delete record");
-                Console.WriteLine("\n5. Exit");
+                Console.Clear();
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("1. Create user");
+                Console.WriteLine("2. Get users");
+                Console.WriteLine("3. Update user");
+                Console.WriteLine("4. Delete user");
+                Console.WriteLine("5. Exit");
 
                 var choice = Console.ReadLine();
 
@@ -56,7 +57,7 @@ namespace ExpenseTracker
                         }
                         else
                         {
-                            Console.WriteLine("No records found.");
+                            Console.WriteLine("\nNo records found.\n");
                         }
                         break;
 
@@ -96,10 +97,15 @@ namespace ExpenseTracker
                         }
                         break;
 
+                    case "5":
+                        return;
+
                     default:
                         Console.WriteLine("\nInvalid choice.");
                         break;
                 }
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
             }
 
         }

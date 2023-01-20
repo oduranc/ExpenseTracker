@@ -11,7 +11,7 @@ namespace ExpenseTracker
     {
         public static List<Transaction> transactions = new List<Transaction>();
 
-        private static int autoIncrement = 0;
+        public static int autoIncrement = 0;
 
         // Enums
         public enum Type { Ingreso, Gasto }
@@ -20,15 +20,15 @@ namespace ExpenseTracker
         // Properties
         public int id { get; set; }
         public Type type { get; set; }
-        public string account { get; set; }
-        public string category { get; set; }
+        public Account account { get; set; }
+        public Categoria category { get; set; }
         public float amount { get; set; }
         public Currency currency { get; set; }
         public string description { get; set; }
         public DateTime date { get; set; }
 
         // Constructor
-        public Transaction(Type type, string account, string category, float amount, Currency currency, string description, DateTime date)
+        public Transaction(Type type, Account account, Categoria category, float amount, Currency currency, string description, DateTime date)
         {
             autoIncrement++;
             this.id = autoIncrement;
@@ -55,9 +55,16 @@ namespace ExpenseTracker
         }
 
         // Read
-        public static List<Transaction> Read()
+        public static List<Transaction> Read(Account account)
         {
-            return transactions;
+            return transactions.FindAll(x => x.account == account).OrderByDescending(x => x.date).ToList()
+                ?? throw transactionNotFound;
+        }
+
+        public static List<Transaction> Read(Account account, Type? type)
+        {
+            return transactions.FindAll(x => x.account == account && x.type == type).OrderByDescending(x => x.date).ToList()
+                ?? throw transactionNotFound;
         }
 
         public static Transaction Read(int id)
