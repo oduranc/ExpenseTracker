@@ -29,12 +29,19 @@ if (monto == 0)
 Console.WriteLine("Conversion");
 Console.WriteLine("1. USD");
 Console.WriteLine("2. DOP");
+
 int choice = Convert.ToInt16(Console.ReadLine());
+string MonedaDominicana = "DOP";
+string MonedaEstadounidense = "USD";
+string MonedaConvertir = (choice == 1) ? MonedaEstadounidense : MonedaDominicana;
+
+
 
 Console.WriteLine($"\nToma tus: ${monto}");
-var cantidad =  convertidor.ConvertirMoneda(monto, banco,choice);
+var cantidad =  convertidor.ConvertirMoneda(monto, banco,MonedaConvertir);
 Console.Write($" Conversion de {monto}----> ");
 var convertirMoneda = await cantidad;
+Console.Write("");
 Console.Write($"{convertirMoneda}");
 
 

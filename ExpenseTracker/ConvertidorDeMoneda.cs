@@ -17,27 +17,27 @@ namespace ExpenseTracker
         }
 
 
-        public async Task <float> ConvertirMoneda(float dinero,string banco,int moneda)
+        public async Task <float> ConvertirMoneda(float dinero,string banco,string moneda)
         {
             float NuevaTasa;
-            if (moneda == 1)
+            if (moneda == "USD")
             {
                 var tasas = await buscadorTasas.ObtenerTasas();
 
-                var tasaVentaDolaresPopular = tasas.Where(x => x.Entidad == $"{banco}"
+                var tasadeConversionDolarPopular = tasas.Where(x => x.Entidad == $"{banco}"
                                                          && x.MonedaOrigen == "DOP"
                                                          && x.MonedaDestino == "USD").First();
-                 NuevaTasa = dinero / tasaVentaDolaresPopular.Valor;
+                 NuevaTasa = dinero / tasadeConversionDolarPopular.Valor;
                 
             }
             else
             {
                 var tasas = await buscadorTasas.ObtenerTasas();
-                var tasaVentaDolaresPopular = tasas.Where(x => x.Entidad == $"{banco}"
+                var tasadeConversionPesosPopular = tasas.Where(x => x.Entidad == $"{banco}"
                                                          && x.MonedaOrigen == "USD"
                                                          && x.MonedaDestino == "DOP").First();
 
-                NuevaTasa = dinero * tasaVentaDolaresPopular.Valor;
+                NuevaTasa = dinero * tasadeConversionPesosPopular.Valor;
             
             }
 

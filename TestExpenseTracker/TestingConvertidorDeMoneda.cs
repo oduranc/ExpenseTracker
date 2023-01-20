@@ -11,12 +11,15 @@ namespace TestExpenseTracker
         public const float TASA_DOP_USD_POPULAR = 45.6f;
 
         public int cantidadDeLlamadasParaObtenerTasas = 0;
-        List<Tasa> IBuscadorTasas.ObtenerTasas()
+        async Task<List<Tasa>> IBuscadorTasas.ObtenerTasas()
         {
+            await Task.Delay(1000); // simulate a delay of 1 second
             cantidadDeLlamadasParaObtenerTasas++;
-            List<Tasa> tasas = new List<Tasa>();
-            tasas.Add(new Tasa(TASA_USD_DOP_POPULAR, "USD", "DOP", "Banco Popular"));
-            tasas.Add(new Tasa(TASA_DOP_USD_POPULAR, "DOP", "USD", "Banco Popular"));
+            List<Tasa> tasas =   new List<Tasa>
+            {
+                new Tasa(TASA_USD_DOP_POPULAR, "USD", "DOP", "Banco Popular"),
+                new Tasa(TASA_DOP_USD_POPULAR, "DOP", "USD", "Banco Popular")
+            };
             return tasas;
         }
     }
@@ -24,7 +27,7 @@ namespace TestExpenseTracker
     public class TestingConvertidorDeMoneda
     {
         [Fact]
-        public void Probando_una_compra_de_dolares_en_el_popular()
+        public async Task Conversion_pesos_a_dolar_en_el_popular()
         {
             // ARRANGE
             float tasaCorrecta = StubBuscadorTasas.TASA_DOP_USD_POPULAR;
@@ -32,7 +35,7 @@ namespace TestExpenseTracker
             ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
 
             // ACT
-            float dolares = sut.ComprarDolaresEnElPopular(20);
+            float dolares = await sut.ConvertirMoneda(20,"Banco Popular","USD");
 
             // ASSERT
             Assert.Equal(20 / tasaCorrecta, dolares, 2);
@@ -40,12 +43,12 @@ namespace TestExpenseTracker
         }
 
         [Theory]
-        [InlineData (300)]
-        [InlineData (123)]
-        [InlineData (456)]
-        [InlineData (427)]
-        [InlineData (564)]
-        public void Probando_varias_compras_de_dolares_en_el_popular(float pesos)
+        [InlineData (3000, "Banco Popular", "USD")]
+        [InlineData (1230,"Banco Popular","USD")]
+        [InlineData (50000, "Banco Popular", "USD")]
+        [InlineData (1000, "Banco Popular", "USD")]
+        [InlineData (545, "Banco Popular", "USD")]
+        public async Task Conversion_varias_pesos_a_dolar_en_el_popular(float pesos,string banco,string moneda)
         {
             // ARRANGE
             float tasaCorrecta = StubBuscadorTasas.TASA_DOP_USD_POPULAR;
@@ -53,11 +56,51 @@ namespace TestExpenseTracker
             ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
 
             // ACT
-            float dolares = sut.ConvertirMoneda(pesos,banco,moneda);
+            float dolares = await sut.ConvertirMoneda(pesos,banco,moneda);
 
             // ASSERT
             Assert.Equal(pesos / tasaCorrecta, dolares, 2);
             Assert.Equal(1, ((StubBuscadorTasas)buscadorTasas).cantidadDeLlamadasParaObtenerTasas);
         }
+
+
+        [Fact]
+        public async Task Conversion_dolar_a_pesos_en_el_popular()
+        {
+            // ARRANGE
+            float tasaCorrecta = StubBuscadorTasas.TASA_USD_DOP_POPULAR;
+            IBuscadorTasas buscadorTasas = new StubBuscadorTasas();
+            ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
+
+            // ACT
+            float pesos = await sut.ConvertirMoneda(100, "Banco Popular", "DOP");
+
+            // ASSERT
+            Assert.Equal(100 * tasaCorrecta, pesos, 2);
+            Assert.Equal(1, ((StubBuscadorTasas)buscadorTasas).cantidadDeLlamadasParaObtenerTasas);
+        }
+
+
+        [Theory]
+        [InlineData(10000, "Banco Popular", "DOP")]
+        [InlineData(58000, "Banco Popular", "DOP")]
+        [InlineData(500, "Banco Popular", "DOP")]
+        [InlineData(60356, "Banco Popular", "DOP")]
+        [InlineData(780, "Banco Popular", "DOP")]
+        public async Task Conversion_varias_dolar_a_pesos_en_el_popular(float dolares, string banco, string moneda)
+        {
+            // ARRANGE
+            float tasaCorrecta = StubBuscadorTasas.TASA_USD_DOP_POPULAR;
+            IBuscadorTasas buscadorTasas = new StubBuscadorTasas();
+            ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
+
+            // ACT
+            float pesos = await sut.ConvertirMoneda(dolares, banco, moneda);
+
+            // ASSERT
+            Assert.Equal(dolares * tasaCorrecta, pesos, 2);
+            Assert.Equal(1, ((StubBuscadorTasas)buscadorTasas).cantidadDeLlamadasParaObtenerTasas);
+        }
+
     }
 }

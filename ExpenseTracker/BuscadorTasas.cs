@@ -26,7 +26,7 @@ namespace ExpenseTracker
     public interface IBuscadorTasas
     {
        
-        public Task<List<Tasa>> ObtenerTasas();
+        public  Task<List<Tasa>> ObtenerTasas();
     }
 
     public class BuscadorTasas: IBuscadorTasas
