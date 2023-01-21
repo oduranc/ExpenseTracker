@@ -74,7 +74,7 @@ static void InitialData()
 static void GetTransactions(Account account, Transaction.Type? type)
 {
     var transactions = type == null ? Transaction.Read(account) : Transaction.Read(account, type);
-    Console.Write("Suma total: ");
+    Console.Write("Total : ");
     float total = GetTotal(account, type);
     Console.ForegroundColor = total < 0 ? ConsoleColor.Red : ConsoleColor.Green;
     Console.Write($"{total} {Transaction.Currency.DOP}\n");

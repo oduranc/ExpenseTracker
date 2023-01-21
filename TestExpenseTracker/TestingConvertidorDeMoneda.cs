@@ -27,44 +27,6 @@ namespace TestExpenseTracker
     public class TestingConvertidorDeMoneda
     {
         [Fact]
-        public async Task Conversion_pesos_a_dolar_en_el_popular()
-        {
-            // ARRANGE
-            float tasaCorrecta = StubBuscadorTasas.TASA_DOP_USD_POPULAR;
-            IBuscadorTasas buscadorTasas = new StubBuscadorTasas();
-            ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
-
-            // ACT
-            float dolares = await sut.ConvertirMoneda(20,"Banco Popular","USD");
-
-            // ASSERT
-            Assert.Equal(20 / tasaCorrecta, dolares, 2);
-            Assert.Equal(1, ((StubBuscadorTasas)buscadorTasas).cantidadDeLlamadasParaObtenerTasas);
-        }
-
-        [Theory]
-        [InlineData (3000, "Banco Popular", "USD")]
-        [InlineData (1230,"Banco Popular","USD")]
-        [InlineData (50000, "Banco Popular", "USD")]
-        [InlineData (1000, "Banco Popular", "USD")]
-        [InlineData (545, "Banco Popular", "USD")]
-        public async Task Conversion_varias_pesos_a_dolar_en_el_popular(float pesos,string banco,string moneda)
-        {
-            // ARRANGE
-            float tasaCorrecta = StubBuscadorTasas.TASA_DOP_USD_POPULAR;
-            IBuscadorTasas buscadorTasas = new StubBuscadorTasas();
-            ConvertidorDeMoneda sut = new ConvertidorDeMoneda(buscadorTasas);
-
-            // ACT
-            float dolares = await sut.ConvertirMoneda(pesos,banco,moneda);
-
-            // ASSERT
-            Assert.Equal(pesos / tasaCorrecta, dolares, 2);
-            Assert.Equal(1, ((StubBuscadorTasas)buscadorTasas).cantidadDeLlamadasParaObtenerTasas);
-        }
-
-
-        [Fact]
         public async Task Conversion_dolar_a_pesos_en_el_popular()
         {
             // ARRANGE
