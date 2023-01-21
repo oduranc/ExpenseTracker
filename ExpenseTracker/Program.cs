@@ -280,7 +280,7 @@ static float GetTotal(Account account, Transaction.Type? type)
     {
         float value = transaction.currency == Transaction.Currency.DOP
             ? transaction.amount
-            : Convertidor("Banco Popular", transaction.amount);
+            : Convertidor("Banco Popular", transaction.amount).GetAwaiter().GetResult();
 
         total = transaction.type == Transaction.Type.Ingreso
             ? total + value
@@ -293,17 +293,14 @@ static async Task<float> Convertidor(string banco, float monto)
     IBuscadorTasas buscadorTasas = new BuscadorTasas(); // En el caso de prueba este será el stub
     ConvertidorDeMoneda convertidor = new ConvertidorDeMoneda(buscadorTasas); // <-- Dependency Injection
 
-    try { monto = Convert.ToSingle(Console.ReadLine()); }
-    catch (FormatException e) { monto = 0.0f; }
-
     if (monto == 0)
     {
         return 0;
     }
 
-    string MonedaEstadounidense = "USD";
+    string MonedaDominicana = "DOP";
 
-    var cantidad = convertidor.ConvertirMoneda(monto, banco, MonedaEstadounidense);
+    var cantidad = convertidor.ConvertirMoneda(monto, banco, MonedaDominicana);
     float convertirMoneda = await cantidad;
     return convertirMoneda;
 }
