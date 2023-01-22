@@ -11,14 +11,17 @@ namespace TestExpenseTracker
         [Fact]
         public void TestCreateCategoryWithConstructor()
         {
-            var category = new List<Categoria>();
-
+            // Arrange
+            var sut = new List<ExpenseTracker.CategoriaCRUD>();
             var name = "Ahorros";
-            var Id = category.Count() > 0 ? category.Max(r => r.Id) + 1 : 1;
-            var Category = new Categoria(name, Id);
-            category.Add(Category);
+            var Id = sut.Count() > 0 ? sut.Max(r => r.Id) + 1 : 1;
+            var Category = new ExpenseTracker.CategoriaCRUD(name, Id);
 
-            var createdCategory = category.SingleOrDefault(r => r.Id == Category.Id);
+            // Act
+            sut.Add(Category);
+            var createdCategory = sut.SingleOrDefault(r => r.Id == Category.Id);
+
+            // Assert
             Assert.NotNull(createdCategory);
             Assert.Equal(name, createdCategory!.Name);
             Assert.Equal(Id, createdCategory.Id);
@@ -28,67 +31,64 @@ namespace TestExpenseTracker
         [Fact]
         public void TestReadCategoryWithConstructor()
         {
-            var category = new List<Categoria>();
-
+            // Arrange
+            var sut = new List<ExpenseTracker.CategoriaCRUD>();
             var name = "Ahorros";
-            var Id = category.Count() > 0 ? category.Max(r => r.Id) + 1 : 1;
-            var Category = new Categoria(name, Id);
-            category.Add(Category);
+            var Id = sut.Count() > 0 ? sut.Max(r => r.Id) + 1 : 1;
+            var Category = new ExpenseTracker.CategoriaCRUD(name, Id);
+            sut.Add(Category);
 
             var sb = new StringBuilder();
             var writer = new StringWriter(sb);
             Console.SetOut(writer);
 
-            if (category.Count() > 0)
-            {
-                foreach (var category01 in category)
-                {
-                    Console.WriteLine("Id: " + category01.Id);
-                    Console.WriteLine("Name: " + category01.Name);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No records found.");
-            }
+            // Act
+            Console.WriteLine(sut.Count() > 0
+            ? "Id: " + sut[0].Id + Environment.NewLine + "Name: " + sut[0].Name
+            : "No records found.");
 
+            // Assert
             var output = sb.ToString().Trim();
             Assert.Equal($"Id: {Category.Id}{Environment.NewLine}Name: {Category.Name}", output);
         }
 
+
         [Fact]
         public void TestUpdateRecordWithConstructor()
         {
-            var category = new List<Categoria>();
-
+            // Arrange
+            var sut = new List<ExpenseTracker.CategoriaCRUD>();
             var name = "Ahorros";
-            var Category = new Categoria(name, 1);
-            category.Add(Category);
+            var Category = new ExpenseTracker.CategoriaCRUD(name, 1);
+            sut.Add(Category);
 
+            // Act
             var newName = "Gastos";
             Category.Name = newName;
 
-            var updateCategory = category.SingleOrDefault(r => r.Id == Category.Id);
+            // Assert
+            var updateCategory = sut.SingleOrDefault(r => r.Id == Category.Id);
             Assert.NotNull(updateCategory);
             Assert.Equal(newName, updateCategory!.Name);
         }
 
+
         [Fact]
         public void TestDeleteCategoryWithConstructor()
         {
-            var category = new List<Categoria>();
-
+            // Arrange
+            var sut = new List<ExpenseTracker.CategoriaCRUD>();
             var name = "Ahorros";
-            var Category = new Categoria(name, 1);
-            category.Add(Category);
+            var Category = new ExpenseTracker.CategoriaCRUD(name, 1);
+            sut.Add(Category);
 
-            category.Remove(Category);
+            // Act
+            sut.Remove(Category);
 
-            var deletedCategory = category.SingleOrDefault(r => r.Id == Category.Id);
+            // Assert
+            var deletedCategory = sut.SingleOrDefault(r => r.Id == Category.Id);
             Assert.Null(deletedCategory);
         }
-
-
 
     }
 
