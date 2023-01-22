@@ -12,10 +12,10 @@ namespace TestExpenseTracker
         public void TestCreateCategoryWithConstructor()
         {
             // Arrange
-            var sut = new List<ExpenseTracker.CategoriaCRUD>();
+            var sut = new List<Categoria>();
             var name = "Ahorros";
             var Id = sut.Count() > 0 ? sut.Max(r => r.Id) + 1 : 1;
-            var Category = new ExpenseTracker.CategoriaCRUD(name, Id);
+            var Category = new Categoria(name, Id);
 
             // Act
             sut.Add(Category);
@@ -32,10 +32,10 @@ namespace TestExpenseTracker
         public void TestReadCategoryWithConstructor()
         {
             // Arrange
-            var sut = new List<ExpenseTracker.CategoriaCRUD>();
+            var sut = new List<Categoria>();
             var name = "Ahorros";
             var Id = sut.Count() > 0 ? sut.Max(r => r.Id) + 1 : 1;
-            var Category = new ExpenseTracker.CategoriaCRUD(name, Id);
+            var Category = new Categoria(name, Id);
             sut.Add(Category);
 
             var sb = new StringBuilder();
@@ -57,9 +57,9 @@ namespace TestExpenseTracker
         public void TestUpdateRecordWithConstructor()
         {
             // Arrange
-            var sut = new List<ExpenseTracker.CategoriaCRUD>();
+            var sut = new List<Categoria>();
             var name = "Ahorros";
-            var Category = new ExpenseTracker.CategoriaCRUD(name, 1);
+            var Category = new Categoria(name, 1);
             sut.Add(Category);
 
             // Act
@@ -77,9 +77,9 @@ namespace TestExpenseTracker
         public void TestDeleteCategoryWithConstructor()
         {
             // Arrange
-            var sut = new List<ExpenseTracker.CategoriaCRUD>();
+            var sut = new List<Categoria>();
             var name = "Ahorros";
-            var Category = new ExpenseTracker.CategoriaCRUD(name, 1);
+            var Category = new Categoria(name, 1);
             sut.Add(Category);
 
             // Act
