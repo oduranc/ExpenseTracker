@@ -2,7 +2,6 @@
 using ExpenseTracker;
 using System;
 using System.Xml.Linq;
-using static ExpenseTracker.Transaction;
 
 
 // Programa
@@ -57,7 +56,7 @@ static void InitialData()
     Account.records.Add(oscarAcc);
     Account.records.Add(ameliaAcc);
 
-    Categoria ahorro = new("Ahorros", 1);
+    Categoria ahorro = new("Salud", 1);
     Categoria ropa = new("Ropa", 2);
     Categoria comida = new("Comida", 3);
     Categoria.category.Add(ahorro);
@@ -78,7 +77,6 @@ static void GetTransactions(Account account, Transaction.Type? type)
    
     Console.WriteLine("");
     float total = GetTotal(account, type);
-    ClearLine();
     foreach (var transaction in transactions)
     {
         Console.ForegroundColor = transaction.type == Transaction.Type.Ingreso ? ConsoleColor.Green : ConsoleColor.Red;
@@ -281,30 +279,16 @@ static void UserActions(int accountId)
 static float GetTotal(Account account, Transaction.Type? type)
 {
     var transactions = type == null ? Transaction.Read(account) : Transaction.Read(account, type);
-    float dolar = 0;
-    float pesos = 0;
-    float total = 0;
-    foreach (var transaction in transactions)
-    {
-        float value = 0;
-        switch (transaction.currency)
-        {
-            case Transaction.Currency.DOP:
-                pesos += transaction.amount;
-                break;
-            case Transaction.Currency.USD:
-                dolar += transaction.amount;
-                break;
-                //Add more cases for other currencies
-        }
-
-        float nuevaTasa = Convertidor("Banco Popular", dolar).GetAwaiter().GetResult();
-            value = pesos + dolar;
-
-        total = transaction.type == Transaction.Type.Ingreso
-            ? total + value
-            : total - value;
-    }
+    
+    //DOP
+    float dopIngresos = transactions.Where(x => x.currency == Transaction.Currency.DOP && x.type == Transaction.Type.Ingreso).Sum(x => x.amount);
+    float dopGastos = transactions.Where(x => x.currency == Transaction.Currency.DOP && x.type == Transaction.Type.Gasto).Sum(x => x.amount);
+    //USD
+    float usdIngresos = transactions.Where(x => x.currency == Transaction.Currency.USD && x.type == Transaction.Type.Ingreso).Sum(x => x.amount);
+    float usdGastos = transactions.Where(x => x.currency == Transaction.Currency.USD && x.type == Transaction.Type.Gasto).Sum(x => x.amount);
+  
+    var conversion = Convertidor("Banco Popular", (usdIngresos - usdGastos)).GetAwaiter().GetResult();
+    float total = (dopIngresos - dopGastos) + conversion;
 
     return total;
 }
@@ -315,19 +299,17 @@ static void ClearLine()
     Console.SetCursorPosition(0, Console.CursorTop - 1);
 
 }
-static async Task<float> Convertidor(string banco, float monto)
+static async Task<float> Convertidor(string bank, float amount)
 {
     IBuscadorTasas buscadorTasas = new BuscadorTasas(); // En el caso de prueba este será el stub
     ConvertidorDeMoneda convertidor = new ConvertidorDeMoneda(buscadorTasas); // <-- Dependency Injection
 
-    if (monto == 0)
+    if (amount == 0)
     {
         return 0;
     }
 
-    string MonedaDominicana = "DOP";
-
-    var cantidad = convertidor.ConvertirMoneda(monto, banco, MonedaDominicana);
+    var cantidad = convertidor.ConvertirMoneda(bank, amount);
     Console.WriteLine("Cargando....");
     float convertirMoneda = await cantidad;
     ClearLine();
